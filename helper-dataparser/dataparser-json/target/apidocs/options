@@ -1,0 +1,24 @@
+-classpath
+'F:/dev/Java/Maven_repo/com/alibaba/fastjson/1.2.9/fastjson-1.2.9.jar;F:/dev/Java/Maven_repo/org/jetbrains/annotations/17.0.0/annotations-17.0.0.jar;F:/dev/Java/Maven_repo/org/projectlombok/lombok/1.18.10/lombok-1.18.10.jar'
+-encoding
+'utf-8'
+-protected
+-sourcepath
+'F:/workspace/helper/helper-dataparser/dataparser-json/src/main/java;F:/workspace/helper/helper-dataparser/dataparser-json/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2020. All rights reserved.'
+-charset
+'utf-8'
+-d
+'F:/workspace/helper/helper-dataparser/dataparser-json/target/apidocs'
+-docencoding
+'utf-8'
+-doctitle
+'dataParser-json 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' 'F:/workspace/helper/helper-dataparser/dataparser-json/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'dataParser-json 1.0-SNAPSHOT API'
