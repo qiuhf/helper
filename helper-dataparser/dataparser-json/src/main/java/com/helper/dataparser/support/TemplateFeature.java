@@ -15,9 +15,9 @@ public enum TemplateFeature {
      */
     DynamicReadArray,
     /**
-     * 初始化生成JsonParser时，解析缓存当前json的所有值
+     * 初始化生成JsonParser时，解析缓存当前json的所有父节点值
      */
-    InitCacheValues,
+    InitJsonParserCacheParentNodeValues,
     /**
      * 自动识别键是否包含'.'或'【',兼容键含特殊符号问题.影响初始化性能
      */

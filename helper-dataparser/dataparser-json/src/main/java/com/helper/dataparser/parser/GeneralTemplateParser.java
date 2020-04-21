@@ -61,7 +61,7 @@ public class GeneralTemplateParser extends AbstractJsonTemplateParser {
                     /* TemplateFeature设置SimpleStructure，如果是同构数组，下标值变为-(i + size) */
                     String index = String.valueOf(isEqual ? i : -(i + size));
                     String[] childNodePath = {index, null, String.valueOf(currentDepth)};
-                    buildNodeInfoByRecursively(jsonArray.get(i), childNodePath, nodes, currentDepth);
+                    this.buildNodeInfoByRecursively(jsonArray.get(i), childNodePath, nodes, currentDepth);
                 }
                 break;
 
@@ -72,7 +72,7 @@ public class GeneralTemplateParser extends AbstractJsonTemplateParser {
                         : JSON.parseObject(json.toString());
                 for (Map.Entry<String, Object> map : jsonObject.entrySet()) {
                     String[] childNodePath = {map.getKey(), null, String.valueOf(currentDepth)};
-                    buildNodeInfoByRecursively(map.getValue(), childNodePath, nodes, currentDepth);
+                    this.buildNodeInfoByRecursively(map.getValue(), childNodePath, nodes, currentDepth);
                 }
 
                 break;

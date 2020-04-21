@@ -55,7 +55,7 @@ public class JsonDiagram implements Serializable {
         typeMapping = builder.types;
         nodeRelation = builder.nodeRelation;
         nodePath = builder.nodePath;
-        maxSize = nodePath.size();
+        maxSize = builder.nodePath.size();
 
         /* 构建节点对应的坐标映射关系 */
         this.buildNodePositionMap(keyMapping, typeMapping);
@@ -78,9 +78,9 @@ public class JsonDiagram implements Serializable {
     }
 
     /**
-     * 获取拉平后json结构：<节点路径，节点类型>
+     * 获取json结构：<节点路径,节点类型>
      *
-     * @return Map<节点路径 ， 节点类型>
+     * @return Map<节点路径, 节点类型>
      */
     public Map<String, String> getJsonKeyAndType() {
         Map<String, String> linkedHashMap = new LinkedHashMap<>();
@@ -191,22 +191,34 @@ public class JsonDiagram implements Serializable {
          * 缓存根节点数据
          */
         private final JSON root;
+
         /**
          * 缓存节点数据，数据结构<节点坐标，值>
          */
         private Map<Position, Object> cacheNodeData;
 
+        private static final boolean ORDERED_FIELD = TemplateFeature.isEnabled(markerCard, TemplateFeature.OrderedField);
+
         JsonParser(String text) {
             String type = typeMapping[0][0];
-            boolean ordered = TemplateFeature.isEnabled(markerCard, TemplateFeature.OrderedField);
             if ("JSONObject".equals(type)) {
-                this.root = ordered ? JSON.parseObject(text, Feature.OrderedField) : JSON.parseObject(text);
+                this.root = ORDERED_FIELD ? JSON.parseObject(text, Feature.OrderedField) : JSON.parseObject(text);
             } else if ("JSONArray".equals(type)) {
-                this.root = ordered ? (JSONArray) JSON.parse(text, Feature.OrderedField) : JSON.parseArray(text);
+                this.root = ORDERED_FIELD ? (JSONArray) JSON.parse(text, Feature.OrderedField) : JSON.parseArray(text);
             } else {
-                throw new IllegalArgumentException(String.format("%s, invalid root type!", type));
+                throw new IllegalArgumentException(String.format("Expectation: JSONObject/JSONArray, Actual: %s, " +
+                        "Illegal root node type!", type));
             }
+
             this.cacheNodeData = new HashMap<>(maxSize - 1);
+            if (TemplateFeature.isEnabled(markerCard, TemplateFeature.KeepOriginalData)) {
+                this.cacheNodeData.put(new Position(0, 0), text);
+            }
+
+            if (TemplateFeature.isEnabled(markerCard, TemplateFeature.InitJsonParserCacheParentNodeValues)) {
+                nodeRelation.entrySet().stream().filter(entry -> entry.getKey().isParentNode())
+                        .forEach(entry -> this.getValueByCoordinate(entry.getKey()));
+            }
         }
 
         public List<Object> selectList() {
@@ -247,10 +259,6 @@ public class JsonDiagram implements Serializable {
             /* 优先从缓存中获取数据 */
             if (this.cacheNodeData.containsKey(position)) {
                 return this.cacheNodeData.get(position);
-            }
-
-            if (position.isRoot()) {
-                return this.root.toJSONString();
             }
 
             /* 根据节点坐标编码获取查询节点坐标轨迹 */

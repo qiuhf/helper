@@ -16,6 +16,7 @@
         <module>helper-utils</module>
         <module>helper-core</module>
         <module>helper-designpattern</module>
+        <module>helper-expression</module>
     </modules>
 
     <properties>

@@ -31,7 +31,7 @@ public abstract class AbstractJsonTemplateParser {
         /* 设置默认属性 */
         int featureValue = 0;
         featureValue |= TemplateFeature.KeepOriginalData.getMark();
-        featureValue |= TemplateFeature.OrderedField.getMark();
+        featureValue |= TemplateFeature.DynamicReadArray.getMark();
         DEFAULT_PARSER_FEATURES = featureValue;
     }
 
@@ -134,8 +134,11 @@ public abstract class AbstractJsonTemplateParser {
 
     private Position buildPosition(Integer[] lastOffset, String[] nodeInfo, int currentLevel) {
         Position position = new Position(currentLevel, lastOffset[currentLevel]);
+        if (currentLevel == 0) {
+            return position;
+        }
         int pid = currentLevel - 1;
-        position.setParentPosition(currentLevel == 0 ? new int[2] : new int[]{pid, lastOffset[pid]});
+        position.setParentPosition(new int[]{pid, lastOffset[pid]});
         position.setParentNode("JSONObject".equals(nodeInfo[1]) || "JSONArray".equals(nodeInfo[1]));
         return position;
     }
@@ -212,18 +215,23 @@ public abstract class AbstractJsonTemplateParser {
      * @return 哈希值
      */
     private long nodeFnvHash(Object object) {
+        if (Objects.isNull(object)) {
+            return -1L;
+        }
+
         if (object instanceof JSONArray) {
             JSONArray array = JSONArray.parseArray(object.toString());
             long sum = 0L;
             for (int i = 0; i < array.size(); i++) {
-                Object element = Objects.isNull(array.get(i)) ? "" : array.get(i);
-                sum += FnvHashUtil.fnv1a64(i + element.getClass().getSimpleName());
+                if (!Objects.isNull(array.get(i))) {
+                    sum += FnvHashUtil.fnv1a64(i + array.get(i).getClass().getSimpleName());
+                }
             }
-            return sum == 0L ? FnvHashUtil.fnv1a64("0") : sum;
+            return sum;
         } else if (object instanceof JSONObject) {
             return JSONObject.parseObject(object.toString()).keySet().stream().mapToLong(FnvHashUtil::fnv1a64).sum();
         } else {
-            return -1L;
+            return FnvHashUtil.fnv1a64(object.getClass().getSimpleName());
         }
     }
 }

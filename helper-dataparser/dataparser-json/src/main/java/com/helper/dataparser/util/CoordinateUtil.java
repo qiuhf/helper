@@ -46,14 +46,4 @@ public class CoordinateUtil {
         return new int[]{Integer.parseInt(position[0]), Integer.parseInt(position[1])};
     }
 
-    /**
-     * 获取坐标的下标索引
-     *
-     * @param maxDepthOfPreviousLayer 上一层级的最大深度
-     * @param level                   当前层级
-     * @return 下标索引
-     */
-    public static int getCoordinateIndex(int maxDepthOfPreviousLayer, int level) {
-        return level + maxDepthOfPreviousLayer;
-    }
 }
