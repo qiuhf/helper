@@ -18,6 +18,7 @@
         <module>helper-designpattern</module>
         <module>helper-expression</module>
         <module>helper-datastructure</module>
+        <module>helper-juc</module>
     </modules>
 
     <properties>
