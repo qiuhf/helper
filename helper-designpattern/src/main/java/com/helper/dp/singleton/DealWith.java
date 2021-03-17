@@ -16,6 +16,8 @@
 
 package com.helper.dp.singleton;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author sz_qiuhf@163.com
  * @since 2020-06-19
@@ -26,9 +28,9 @@ public class DealWith {
      *
      * @param time 业务处理时间
      */
-    public static void handle(Long time) {
+    public static void doSomething(Long time) {
         try {
-            Thread.sleep(time);
+            TimeUnit.MILLISECONDS.sleep(time);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

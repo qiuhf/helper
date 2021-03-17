@@ -39,7 +39,7 @@ public class Singleton05 {
         if (Objects.isNull(INSTANCE)) {
             // 妄图通过减小同步代码块的方式提高效率，然而不可行
             synchronized (Singleton05.class) {
-                DealWith.handle(10L);
+                DealWith.doSomething(10L);
                 INSTANCE = new Singleton05();
             }
         }

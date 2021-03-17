@@ -36,7 +36,7 @@ public class Singleton03 {
 
     public static Singleton03 getInstance() {
         if (Objects.isNull(INSTANCE)) {
-            DealWith.handle(10L);
+            DealWith.doSomething(10L);
             INSTANCE = new Singleton03();
         }
         return INSTANCE;

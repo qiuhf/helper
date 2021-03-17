@@ -37,7 +37,7 @@ public class Singleton01 {
     }
 
     public static Singleton01 getInstance() {
-        DealWith.handle(10L);
+        DealWith.doSomething(10L);
         return INSTANCE;
     }
 

@@ -39,7 +39,7 @@ public class Singleton06 {
         if (Objects.isNull(INSTANCE)) {
             synchronized (Singleton06.class) {
                 if (Objects.isNull(INSTANCE)) {
-                    DealWith.handle(10L);
+                    DealWith.doSomething(10L);
                     INSTANCE = new Singleton06();
                 }
             }

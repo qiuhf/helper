@@ -37,7 +37,7 @@ public class Singleton04 {
 
     public static synchronized Singleton04 getInstance() {
         if (Objects.isNull(INSTANCE)) {
-            DealWith.handle(10L);
+            DealWith.doSomething(10L);
             INSTANCE = new Singleton04();
         }
         return INSTANCE;

@@ -17,6 +17,7 @@
         <module>helper-core</module>
         <module>helper-designpattern</module>
         <module>helper-expression</module>
+        <module>helper-datastructure</module>
     </modules>
 
     <properties>
@@ -25,22 +26,37 @@
 
         <!-- versions -->
         <compile.version>8</compile.version>
-        <junit.version>4.13-rc-1</junit.version>
-        <lombok.version>1.18.10</lombok.version>
+        <junit.version>4.13</junit.version>
+        <lombok.version>1.18.12</lombok.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- 全局单元测试 -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- 全局单元测试 -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
         </dependency>
     </dependencies>
 
