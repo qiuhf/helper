@@ -19,7 +19,7 @@ package com.hleper.juc.thread000;
 import java.util.concurrent.Executors;
 
 /**
- * 启动线程的三种方式
+ * 什么是线程及启动线程的三种方式
  * 1. 继承Thread类
  * 2. 实现Runnable接口
  * 3. 线程池方式
@@ -45,6 +45,8 @@ public class HowToCreateThread {
         Thread runnable = new Thread(new MyRunnable());
         runnable.setName("MyRunnable");
         runnable.start();
+
+        new Thread(() -> System.out.println("Hello Lambda.")).start();
 
         Executors.newCachedThreadPool().submit(() ->
                 System.out.println("Hello ThreadPool.")
