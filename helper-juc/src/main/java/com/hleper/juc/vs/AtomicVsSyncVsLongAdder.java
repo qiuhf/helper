@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hleper.juc.lock;
+package com.hleper.juc.vs;
 
 
 import java.util.Locale;
