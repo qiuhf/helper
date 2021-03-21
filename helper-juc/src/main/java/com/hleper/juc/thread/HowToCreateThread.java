@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hleper.juc.thread000;
+package com.hleper.juc.thread;
 
 import java.util.concurrent.Executors;
 

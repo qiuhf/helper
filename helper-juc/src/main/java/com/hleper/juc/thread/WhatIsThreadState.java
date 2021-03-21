@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hleper.juc.thread000;
+package com.hleper.juc.thread;
 
 import lombok.SneakyThrows;
 
@@ -32,7 +32,8 @@ public class WhatIsThreadState {
      */
     private static final Object LOCK = new Object();
     /**
-     * 必须要加volatile，保证线程之间可见
+     * 必须要加volatile，保证线程之间可见，不保证原子性
+     * synchronized既保证线程之间可见性，也保证线程间原子性
      */
     private static volatile boolean stop = false;
 
@@ -43,6 +44,7 @@ public class WhatIsThreadState {
         // 启动MyThread线程
         thread.start();
         // MyThread线程的状态：NEW -> RUNNABLE
+        // RUNNABLE内部有Ready和Running两种状态，调用Thread.yield(), Running -> ready
         printCurrentThreadState(thread);
 
         // 休眠1s, 让MyThread先获取到锁, 模拟获取锁场景
