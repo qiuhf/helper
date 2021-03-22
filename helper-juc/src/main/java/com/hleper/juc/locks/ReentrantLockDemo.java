@@ -23,9 +23,8 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * ReentrantLock API使用
  * <p>
- * 在并非容器中详细讲解
  * 1. 读写锁
- * 2. 生产者与消费者
+ * 2. 生产者与消费者 {@link com.hleper.juc.container.ContainerByCondition}
  *
  * @author sz_qiuhf@163.com
  * @since 2021-03-21
@@ -68,39 +67,44 @@ public class ReentrantLockDemo {
     }
 
     /**
-     * lock()进行锁定，lock()方法后面必须紧跟try{}finally{},避免死锁
+     * 对interrupt()方法做出响应
      */
-    public void lockDemo() throws InterruptedException {
+    public void lockInterruptiblyDemo() throws InterruptedException {
         Lock lock = new ReentrantLock();
-        new Thread(() -> {
+        Thread thread1 = new Thread(() -> {
             lock.lock();
             try {
-                for (int i = 0; i < 5; i++) {
-                    System.out.println("lockDemo-" + i);
-                    TimeUnit.SECONDS.sleep(1);
-                }
+                System.out.println("Get lock");
+                TimeUnit.DAYS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
                 lock.unlock();
+                System.out.println("Release lock.");
             }
-        }).start();
-
-        Thread thread = new Thread(() -> {
-            lock.lock();
-            try {
-                System.out.println("ScrambleLock get lock, sleep...");
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                lock.unlock();
-            }
-            System.out.println("ScrambleLock release lock.");
         });
+        thread1.start();
 
-        thread.start();
-        thread.join();
+        Thread thread2 = new Thread(() -> {
+            try {
+                lock.lockInterruptibly();
+                System.out.println("lockInterruptiblyDemo start");
+                TimeUnit.SECONDS.sleep(2);
+                System.out.println("lockInterruptiblyDemo end");
+            } catch (InterruptedException e) {
+                System.out.println(e);
+                thread1.interrupt();
+            } finally {
+                lock.unlock();
+            }
+        });
+        thread2.start();
+
+        TimeUnit.SECONDS.sleep(2);
+        thread2.interrupt();
+
+        thread1.join();
+        thread2.join();
     }
 
     /**
@@ -144,43 +148,38 @@ public class ReentrantLockDemo {
     }
 
     /**
-     * 对interrupt()方法做出响应
+     * lock()进行锁定，lock()方法后面必须紧跟try{}finally{},避免死锁
      */
-    public void lockInterruptiblyDemo() throws InterruptedException {
+    public void lockDemo() throws InterruptedException {
         Lock lock = new ReentrantLock();
-        Thread thread1 = new Thread(() -> {
+        new Thread(() -> {
             lock.lock();
             try {
-                System.out.println("Get lock");
-                TimeUnit.DAYS.sleep(1);
+                for (int i = 0; i < 5; i++) {
+                    System.out.println("lockDemo-" + i);
+                    TimeUnit.SECONDS.sleep(1);
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
                 lock.unlock();
-                System.out.println("Release lock.");
             }
-        });
-        thread1.start();
+        }).start();
 
-        Thread thread2 = new Thread(() -> {
+        Thread thread = new Thread(() -> {
+            lock.lock();
             try {
-                lock.lockInterruptibly();
-                System.out.println("lockInterruptiblyDemo start");
+                System.out.println("ScrambleLock get lock, sleep...");
                 TimeUnit.SECONDS.sleep(2);
-                System.out.println("lockInterruptiblyDemo end");
             } catch (InterruptedException e) {
-                System.out.println(e);
-                thread1.interrupt();
+                e.printStackTrace();
             } finally {
                 lock.unlock();
             }
+            System.out.println("ScrambleLock release lock.");
         });
-        thread2.start();
 
-        TimeUnit.SECONDS.sleep(2);
-        thread2.interrupt();
-
-        thread1.join();
-        thread2.join();
+        thread.start();
+        thread.join();
     }
 }
