@@ -23,8 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * ReentrantLock API使用
  * <p>
- * 1. 读写锁
- * 2. 生产者与消费者 {@link com.hleper.juc.container.ContainerByCondition}
+ * 1. 生产者与消费者 {@link com.hleper.juc.container.ContainerByCondition}
  *
  * @author sz_qiuhf@163.com
  * @since 2021-03-21
@@ -44,6 +43,7 @@ public class ReentrantLockDemo {
 
         System.out.println(" ================== lockNonFairOrFair ========================= ");
         reentrantLockDemo.lockNonFairOrFair(true);
+
     }
 
     public void lockNonFairOrFair(boolean nonFair) {
